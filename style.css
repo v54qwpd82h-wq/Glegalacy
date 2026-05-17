@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G-LEGACY — Germain | Tech & Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#04080f;--bg2:#080f1a;
+  --cyan:#00f5d4;--magenta:#ff2d78;--gold:#ffd166;--blue:#0066ff;
+  --text:#e2e8f0;--muted:#64748b;--card:#0a1120;--border:rgba(0,245,212,0.1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+.cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(0,245,212,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .15s ease,top .15s ease,width .3s,height .3s}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,245,212,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,212,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 70% 50% at 0% 0%,rgba(0,102,255,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 100% 100%,rgba(255,45,120,0.1) 0%,transparent 60%);pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 6%;background:rgba(4,8,15,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.15em;background:linear-gradient(90deg,var(--cyan),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{list-style:none;display:flex;gap:2rem;align-items:center}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{padding:.55rem 1.4rem !important;border-radius:4px;background:var(--cyan) !important;color:#04080f !important;-webkit-text-fill-color:#04080f !important;font-weight:700 !important}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:8rem 6% 5rem;position:relative;z-index:1}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin-bottom:1.5rem;animation:slideIn .5s ease both}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,9rem);line-height:.9;letter-spacing:.04em;animation:slideIn .5s .1s ease both}
+h1 .name{display:block;-webkit-text-stroke:2px rgba(255,255,255,.15);color:transparent}
+h1 .brand{display:block;background:linear-gradient(90deg,var(--cyan) 0%,var(--blue) 50%,var(--magenta) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:480px;font-size:1.05rem;color:var(--muted);line-height:1.75;margin:1.8rem 0 2.5rem;animation:slideIn .5s .2s ease both}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;animation:slideIn .5s .3s ease both}
+.btn-main{display:inline-flex;align-items:center;gap:.6rem;padding:1rem 2.2rem;background:var(--cyan);color:#04080f;font-weight:700;font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(0,245,212,.3)}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(0,245,212,.45)}
+.btn-ghost{display:inline-flex;align-items:center;gap:.6rem;padding:1rem 2.2rem;border:1px solid var(--border);color:var(--text);font-weight:500;font-size:.9rem;text-decoration:none;border-radius:4px;transition:border-color .2s,background .2s}
+.btn-ghost:hover{border-color:var(--cyan);background:rgba(0,245,212,.05)}
+.hero-numbers{display:flex;gap:3rem;margin-top:4rem;flex-wrap:wrap;animation:slideIn .5s .4s ease both}
+.num-val{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:.05em;color:var(--cyan);line-height:1}
+.num-label{font-size:.78rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.3rem}
+.side-text{position:absolute;right:-2rem;top:50%;transform:translateY(-50%) rotate(90deg);font-family:'Bebas Neue',sans-serif;font-size:.75rem;letter-spacing:.3em;color:rgba(100,116,139,.3);white-space:nowrap}
+.scroll-indicator{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-size:.7rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;z-index:1;animation:fadeUpCenter 1s 1s ease both}
+.scroll-line{width:1px;height:40px;background:linear-gradient(var(--cyan),transparent);animation:scrollAnim 1.5s infinite}
+@keyframes scrollAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fadeUpCenter{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* SECTIONS */
+section{position:relative;z-index:1}
+.sec-wrap{padding:6rem 6%}
+.sec-tag{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin-bottom:.6rem;display:flex;align-items:center;gap:.8rem}
+.sec-tag::before{content:'';display:block;width:30px;height:1px;background:var(--cyan)}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);letter-spacing:.04em;line-height:1;margin-bottom:1.2rem}
+.sec-sub{font-size:1rem;color:var(--muted);line-height:1.75;max-width:500px}
+
+/* SERVICES */
+#services{background:var(--bg2)}
+.services-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;flex-wrap:wrap;gap:2rem}
+.service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.service-cell{background:var(--bg2);padding:2.2rem;transition:background .25s;position:relative;overflow:hidden}
+.service-cell:hover{background:#0d1930}
+.service-cell::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.service-cell:hover::after{transform:scaleX(1)}
+.sc-emoji{font-size:1.8rem;margin-bottom:1rem}
+.sc-cat{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--magenta);font-weight:600;margin-bottom:.6rem}
+.sc-name{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.06em;margin-bottom:1rem;color:var(--text)}
+.sc-list{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.sc-list li{font-size:.85rem;color:var(--muted);display:flex;align-items:flex-start;gap:.5rem;line-height:1.4}
+.sc-list li::before{content:'▸';color:var(--cyan);font-size:.7rem;margin-top:2px;flex-shrink:0}
+
+/* ABOUT */
+#about .sec-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:center}
+.about-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:3rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.about-card::before{content:'G';position:absolute;top:-20px;right:-10px;font-family:'Bebas Neue',sans-serif;font-size:12rem;color:rgba(0,245,212,.03);pointer-events:none;line-height:1}
+.av{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2.8rem;margin:0 auto 1.5rem;color:#04080f;box-shadow:0 0 40px rgba(0,245,212,.25)}
+.av-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.1em}
+.av-title{color:var(--cyan);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;margin-top:.3rem}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem;justify-content:center}
+.tag{padding:.3rem .9rem;border-radius:3px;border:1px solid rgba(0,245,212,.15);font-size:.72rem;color:var(--muted);letter-spacing:.06em}
+.about-text .sec-sub{margin-bottom:2rem}
+.about-feats{display:flex;flex-direction:column;gap:1rem}
+.feat{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;background:var(--card);border:1px solid var(--border);border-radius:6px}
+.feat-icon{font-size:1.3rem;flex-shrink:0}
+.feat-text strong{display:block;font-size:.9rem;margin-bottom:.15rem}
+.feat-text span{font-size:.78rem;color:var(--muted)}
+
+/* CONTACT */
+#contact{background:var(--bg2)}
+.contact-wrap{max-width:700px;margin:0 auto;text-align:center}
+.contact-wrap .sec-tag{justify-content:center}
+.contact-wrap .sec-tag::before{display:none}
+.contact-wrap .sec-sub{margin:0 auto 3rem}
+.contact-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:3rem;position:relative;overflow:hidden}
+.contact-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--magenta))}
+.wa-number{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3.5rem);letter-spacing:.1em;color:var(--text);margin-bottom:.5rem}
+.wa-label{font-size:.8rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem}
+.contact-btn{display:inline-flex;align-items:center;gap:.8rem;padding:1.1rem 3rem;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-weight:700;font-size:1rem;text-decoration:none;border-radius:6px;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(37,211,102,.25)}
+.contact-btn:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(37,211,102,.4)}
+.contact-note{margin-top:2rem;font-size:.8rem;color:var(--muted);padding-top:1.5rem;border-top:1px solid var(--border)}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem 6%;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.15em;background:linear-gradient(90deg,var(--cyan),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-copy,.footer-made{font-size:.78rem;color:var(--muted)}
+.footer-made span{color:var(--cyan)}
+
+/* ANIMATIONS */
+@keyframes slideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease}
+.reveal.show{opacity:1;transform:translateY(0)}
+
+/* MOBILE */
+@media(max-width:768px){
+  .nav-links{display:none}
+  #about .sec-wrap{grid-template-columns:1fr}
+  .services-top{flex-direction:column;align-items:flex-start}
+  .hero-numbers{gap:2rem}
+  .side-text,.scroll-indicator{display:none}
+  body{cursor:auto}
+  .cursor,.cursor-ring{display:none}
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:10px}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">G-LEGACY</div>
+  <ul class="nav-links">
+    <li><a href="#services">Sèvis</a></li>
+    <li><a href="#about">Apwopo</a></li>
+    <li><a href="#contact" class="nav-cta">Kontakte Mwen</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="dot"></span> Disponib pou pwojè</div>
+    <h1>
+      <span class="name">Germain</span>
+      <span class="brand">G‑Legacy</span>
+    </h1>
+    <p class="hero-desc">Dev &amp; Designer pwofesyonèl. Mwen bati aplikasyon, sit web ak idantite vizyèl ki pote rezilta reyèl pou biznis ou.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-main">Wè Sèvis Yo →</a>
+      <a href="#contact" class="btn-ghost">💬 WhatsApp Mwen</a>
+    </div>
+    <div class="hero-numbers">
+      <div><div class="num-val">18+</div><div class="num-label">Sèvis</div></div>
+      <div><div class="num-val">3</div><div class="num-label">Domèn</div></div>
+      <div><div class="num-val">24/7</div><div class="num-label">Sipò</div></div>
+    </div>
+    <div class="side-text">TECH · DESIGN · DIGITAL</div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>Scroll
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sec-wrap">
+    <div class="services-top reveal">
+      <div>
+        <div class="sec-tag">Sèvis Yo</div>
+        <h2 class="sec-title">Sa Mwen<br>Ka Fè Pou Ou</h2>
+      </div>
+      <p class="sec-sub">Solisyon konplè — devlopman, design, maketing — tout sa ou bezwen pou biznis ou grandi.</p>
+    </div>
+    <div class="service-grid">
+      <div class="service-cell reveal">
+        <div class="sc-emoji">📱</div>
+        <div class="sc-cat">Dev Mobile</div>
+        <div class="sc-name">Aplikasyon</div>
+        <ul class="sc-list">
+          <li>Aplikasyon Android (APK)</li>
+          <li>Aplikasyon Mobile</li>
+          <li>Aplikasyon Chat / Messaging</li>
+        </ul>
+      </div>
+      <div class="service-cell reveal">
+        <div class="sc-emoji">🌐</div>
+        <div class="sc-cat">Dev Web</div>
+        <div class="sc-name">Sit &amp; Page</div>
+        <ul class="sc-list">
+          <li>Sit Web Pwofesyonèl</li>
+          <li>Landing Page</li>
+          <li>Blog / Sit Pèsonèl</li>
+          <li>E-Commerce Site</li>
+        </ul>
+      </div>
+      <div class="service-cell reveal">
+        <div class="sc-emoji">🎨</div>
+        <div class="sc-cat">Design &amp; Brand</div>
+        <div class="sc-name">Idantite</div>
+        <ul class="sc-list">
+          <li>Logo Pwofesyonèl</li>
+          <li>Flyer / Afich / Bannière</li>
+          <li>Idantite Vizyèl (Branding)</li>
+          <li>Chwazi Non Biznis</li>
+        </ul>
+      </div>
+      <div class="service-cell reveal">
+        <div class="sc-emoji">📣</div>
+        <div class="sc-cat">Maketing</div>
+        <div class="sc-name">Grandi Odyans</div>
+        <ul class="sc-list">
+          <li>Pwomosyon YouTube Channel</li>
+          <li>Vizibilite Rezo Sosyal</li>
+          <li>Pwomosyon Chèn WhatsApp</li>
+          <li>Estrateji pou Grandi Odyans</li>
+        </ul>
+      </div>
+      <div class="service-cell reveal">
+        <div class="sc-emoji">🤖</div>
+        <div class="sc-cat">Otomatizasyon</div>
+        <div class="sc-name">Bot &amp; AI</div>
+        <ul class="sc-list">
+          <li>Robo WhatsApp (Bot)</li>
+          <li>Chatbot pou Biznis</li>
+          <li>Mesaj Otomatik (Automation)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-wrap">
+    <div class="about-card reveal">
+      <div class="av">G</div>
+      <div class="av-name">Germain</div>
+      <div class="av-title">Fondatè @ G-Legacy</div>
+      <div class="tags">
+        <span class="tag">Android Dev</span>
+        <span class="tag">Web Dev</span>
+        <span class="tag">UI/UX</span>
+        <span class="tag">Branding</span>
+        <span class="tag">Chatbot</span>
+        <span class="tag">Automation</span>
+        <span class="tag">Marketing</span>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="sec-tag">Apwopo Mwen</div>
+      <h2 class="sec-title">Tech.<br>Design.<br>Rezilta.</h2>
+      <p class="sec-sub">Mwen se Germain, kreyatè dèyè G-Legacy. Pasyon mwen se itilize teknoloji ak kreyativite pou ede biznis ayisyen ak entènasyonal akonpli vizyon yo.</p>
+      <div class="about-feats">
+        <div class="feat">
+          <span class="feat-icon">⚡</span>
+          <div class="feat-text"><strong>Rapid &amp; Efikas</strong><span>Livrezon nan tan &amp; kalite wo nivo</span></div>
+        </div>
+        <div class="feat">
+          <span class="feat-icon">🎯</span>
+          <div class="feat-text"><strong>Adapte pou Ou</strong><span>Chak pwojè kreye selon bezwen ou</span></div>
+        </div>
+        <div class="feat">
+          <span class="feat-icon">🔒</span>
+          <div class="feat-text"><strong>Konfidansyèl &amp; Fyab</strong><span>Relasyon pwofesyonèl ak konfyans</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-wrap">
+    <div class="contact-wrap reveal">
+      <div class="sec-tag">Kontakt</div>
+      <h2 class="sec-title">Kòmanse<br>Pwojè Ou</h2>
+      <p class="sec-sub">Yon mesaj sèlman pou kòmanse kolaborasyon nou. Mwen la pou reponn ou.</p>
+      <div class="contact-box">
+        <div class="wa-label">WhatsApp Dirèk</div>
+        <div class="wa-number">+509 41 23 14 18</div>
+        <a href="https://wa.me/50941231418" target="_blank" class="contact-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Ekri Mwen sou WhatsApp
+        </a>
+        <div class="contact-note">Disponib 7/7 · Repon rapid · Konsiltasyon gratis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">G-LEGACY</div>
+    <div class="footer-copy">© 2025 G-Legacy. Tout dwa rezève.</div>
+    <div class="footer-made">Fèt ak <span>♥</span> pa Germain</div>
+  </div>
+</footer>
+
+<script>
+// Custom cursor
+const cur=document.getElementById('cur');
+const curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function animCursor(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  curR.style.left=rx+'px';curR.style.top=ry+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.5)'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)'});
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
